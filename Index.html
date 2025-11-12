@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://optimizely-staging.s3.amazonaws.com/js/5398415178727424.js"></script>
-    <title>Optimizely CSP Test - HTML Editor Loading Issue</title>
+    <title>Optimizely Visual Editor Compatible - HTML Editor Test</title>
+    
+    <!-- Meta CSP để cố gắng override GitHub Pages restrictions -->
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors https://app.optimizely.com https://optimize.google.com *; default-src 'self' https://app.optimizely.com; script-src 'self' https://app.optimizely.com 'unsafe-inline'; style-src 'self' https://app.optimizely.com 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://app.optimizely.com https://logx.optimizely.com;">
+    
+    <!-- Cố gắng remove X-Frame-Options nếu có thể -->
+    <meta http-equiv="X-Frame-Options" content="">
+    
     <style>
         :root {
             --primary: #667eea;
-            --primary-dark: #5a6fd8;
             --success: #28a745;
             --warning: #ffc107;
             --bg: #f5f7fa;
-            --card-bg: #ffffff;
             --text: #2c3e50;
-            --text-muted: #6c757d;
             --border: #e9ecef;
             --shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
@@ -22,7 +25,7 @@
         * { box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
             padding: 20px;
             background: var(--bg);
@@ -35,8 +38,18 @@
             margin: 0 auto;
         }
 
+        .status-banner {
+            background: linear-gradient(135deg, var(--success), #20c997);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
         .header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(135deg, var(--primary), #5a6fd8);
             color: white;
             padding: 2rem;
             border-radius: 12px;
@@ -45,45 +58,17 @@
             box-shadow: var(--shadow);
         }
 
-        .header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2.5rem;
-            font-weight: 600;
-        }
-
-        .header p {
-            margin: 0;
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
         .instructions {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            color: #0066cc;
             padding: 1.5rem;
             border-radius: 8px;
             margin-bottom: 2rem;
         }
 
-        .instructions h3 {
-            margin-top: 0;
-            color: #856404;
-        }
-
-        .code-block {
-            background: #f8f9fa;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1rem;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 0.875rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
         .test-section {
-            background: var(--card-bg);
+            background: white;
             padding: 2rem;
             border-radius: 12px;
             box-shadow: var(--shadow);
@@ -93,18 +78,31 @@
 
         .test-section h2 {
             margin: 0 0 1rem 0;
-            color: var(--text);
             font-size: 1.5rem;
             border-bottom: 3px solid var(--primary);
             padding-bottom: 0.5rem;
         }
 
-        .editable-content {
-            background: #f8f9ff;
-            border: 2px dashed var(--primary);
+        .editable-highlight {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
             padding: 1.5rem;
             border-radius: 8px;
             margin: 1rem 0;
+            position: relative;
+        }
+
+        .editable-highlight::before {
+            content: "👆 TRY 'EDIT HTML' ON THIS SECTION";
+            position: absolute;
+            top: -12px;
+            left: 1rem;
+            background: #ffc107;
+            color: #212529;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 4px;
         }
 
         .button-group {
@@ -122,24 +120,16 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 500;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
         }
 
         .test-button:hover {
-            background: var(--primary-dark);
+            background: #5a6fd8;
             transform: translateY(-1px);
         }
 
-        .test-button.success {
-            background: var(--success);
-        }
-
-        .test-button.warning {
-            background: var(--warning);
-            color: var(--text);
-        }
+        .test-button.success { background: var(--success); }
+        .test-button.warning { background: var(--warning); color: var(--text); }
 
         .form-grid {
             display: grid;
@@ -156,54 +146,22 @@
         .form-group label {
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--text);
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group select, .form-group textarea {
             padding: 0.75rem;
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-        }
-
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--success);
-            margin-right: 8px;
+        .expected-result {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
         }
 
         @media (max-width: 768px) {
@@ -213,166 +171,118 @@
         }
     </style>
     
-    <!-- Mock Optimizely Snippet - Hoạt động mà không cần Project ID thật -->
+    <!-- Optimizely Mock Snippet -->
     <script>
-        // Tạo mock Optimizely object để test
         window.optimizely = window.optimizely || [];
         window.optimizely.push = function(command) {
             console.log('Mock Optimizely command:', command);
         };
         
-        // Simulate Optimizely activation
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Mock Optimizely snippet loaded successfully');
-            console.log('Page ready for Visual Editor testing');
-            
-            // Add some mock tracking
-            window.optimizely.push(['trackEvent', 'page_loaded', {
-                page_title: document.title,
-                timestamp: new Date().toISOString()
-            }]);
+            console.log('✅ Page loaded - Testing Visual Editor compatibility');
+            console.log('🔧 Ready for HTML Editor conflict testing');
         });
     </script>
 </head>
 <body>
     <div class="container">
+        <div class="status-banner">
+            ✅ Visual Editor Compatible Mode - Trang được optimize cho Optimizely
+        </div>
+
         <div class="header">
-            <h1>🔧 Optimizely CSP Test Page</h1>
-            <p>Trang test để reproduce HTML Editor loading issue với Content Security Policy</p>
+            <h1>🔧 Optimizely HTML Editor Loading Test</h1>
+            <p>Trang đã được config để Visual Editor có thể load</p>
         </div>
 
         <div class="instructions">
-            <h3>📋 Hướng dẫn sử dụng ModHeader:</h3>
+            <h3>📋 Quy trình test HTML Editor loading issue:</h3>
             <ol>
-                <li><strong>Cài đặt ModHeader extension</strong> cho Chrome/Edge</li>
-                <li><strong>Tạo profile mới</strong> với URL pattern cho trang này</li>
-                <li><strong>Thêm Response Header:</strong>
-                    <div class="code-block"><strong>Name:</strong> Content-Security-Policy<br>
-<strong>Value:</strong> default-src 'self'; frame-ancestors https://app.optimizely.com; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:</div>
-                </li>
-                <li><strong>Reload trang</strong> và mở trong Optimizely Visual Editor</li>
-                <li><strong>Thử "Edit HTML"</strong> → HTML Editor sẽ loading mãi không dừng</li>
+                <li><strong>Test Visual Editor:</strong> Mở trang này trong Optimizely Visual Editor</li>
+                <li><strong>Verify loading:</strong> Trang phải load thành công</li>
+                <li><strong>Setup ModHeader:</strong> Sau đó config CSP restrictive để tạo HTML Editor conflict</li>
+                <li><strong>Test HTML Editor:</strong> Thử "Edit HTML" → sẽ loading spinner forever</li>
             </ol>
         </div>
 
         <div class="test-section">
-            <h2>🎯 Section 1: Text Content Testing</h2>
-            <div class="editable-content">
-                <p><strong>Đây là đoạn text chính để test HTML Editor.</strong> Hãy click "Edit HTML" trên paragraph này để reproduce loading issue. Content này được thiết kế đặc biệt để test các tính năng của Optimizely Visual Editor.</p>
-                <p>Đoạn văn thứ hai với <em>text in nghiêng</em> và <strong>text đậm</strong>. Bạn có thể thử edit HTML trên bất kỳ phần nào của content này để trigger vấn đề loading spinner.</p>
+            <h2>🎯 Section 1: Primary Test Content</h2>
+            <div class="editable-highlight">
+                <h3>Content chính để test HTML Editor</h3>
+                <p><strong>Click "Edit HTML" trên section này</strong> để test HTML Editor functionality. Khi có CSP restrictions, HTML Editor sẽ không thể load các resources cần thiết từ Optimizely domains.</p>
+                <p>Paragraph với <em>italic text</em> và <strong>bold formatting</strong>. Perfect để test HTML Editor behavior under different CSP configurations.</p>
                 <ul>
-                    <li>Item 1: Test HTML Editor trên list item này</li>
-                    <li>Item 2: Hoặc thử rearrange các items</li>
-                    <li>Item 3: Check console để xem CSP violations</li>
+                    <li>List item 1: HTML Editor loading test</li>
+                    <li>List item 2: CSP violation checking</li>
+                    <li>List item 3: Console error monitoring</li>
                 </ul>
             </div>
         </div>
 
         <div class="test-section">
             <h2>🔘 Section 2: Interactive Elements</h2>
-            <div class="button-group">
-                <button class="test-button" onclick="handleButtonClick(this)">Primary Button - Test Edit HTML</button>
-                <button class="test-button success" onclick="handleButtonClick(this)">Success Button - Try HTML Editor</button>
-                <button class="test-button warning" onclick="handleButtonClick(this)">Warning Button - CSP Test</button>
+            <div class="editable-highlight">
+                <div class="button-group">
+                    <button class="test-button" onclick="testClick(this)">Primary Button</button>
+                    <button class="test-button success" onclick="testClick(this)">Success Button</button>
+                    <button class="test-button warning" onclick="testClick(this)">Warning Button</button>
+                </div>
+                <p>Thử "Edit HTML" trên button group này để test HTML Editor với interactive elements.</p>
             </div>
-            <p>Thử click "Edit HTML" trên các buttons trên để test HTML Editor popup loading issue. Mỗi button có styling khác nhau để test comprehensive.</p>
         </div>
 
         <div class="test-section">
             <h2>📝 Section 3: Form Elements</h2>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="test-input">Test Input Field:</label>
-                    <input type="text" id="test-input" placeholder="Try HTML Editor on this input field">
+            <div class="editable-highlight">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="test-input">Test Input:</label>
+                        <input type="text" id="test-input" placeholder="HTML Editor test input">
+                    </div>
+                    <div class="form-group">
+                        <label for="test-select">Test Select:</label>
+                        <select id="test-select">
+                            <option>HTML Editor Loading Test</option>
+                            <option>CSP Conflict Scenario</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="test-select">Test Select Dropdown:</label>
-                    <select id="test-select">
-                        <option value="">Choose option to test HTML Editor</option>
-                        <option value="option1">Option 1 - Edit HTML Test</option>
-                        <option value="option2">Option 2 - CSP Loading Issue</option>
-                        <option value="option3">Option 3 - Visual Editor Works</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="test-textarea">Test Textarea:</label>
-                <textarea id="test-textarea" rows="4" placeholder="Test HTML Editor loading spinner issue on this textarea element. Should show forever loading when CSP is configured correctly."></textarea>
-            </div>
-        </div>
-
-        <div class="test-section">
-            <h2>🎴 Section 4: Card Layout Testing</h2>
-            <div class="card-grid">
-                <div class="card">
-                    <h3><span class="status-indicator"></span>Card 1: HTML Editor Test</h3>
-                    <p>Card này chứa nhiều elements khác nhau để test HTML Editor. CSP configuration sẽ prevent HTML Editor loading nhưng Visual Editor vẫn hoạt động bình thường.</p>
-                    <button class="test-button" onclick="handleButtonClick(this)">Card Button 1</button>
-                </div>
-                <div class="card">
-                    <h3><span class="status-indicator"></span>Card 2: CSP Violation Testing</h3>
-                    <p>Card thứ hai để test comprehensive HTML Editor functionality. Check Developer Console để xem các CSP violation errors khi HTML Editor cố load.</p>
-                    <button class="test-button success" onclick="handleButtonClick(this)">Card Button 2</button>
-                </div>
-                <div class="card">
-                    <h3><span class="status-indicator"></span>Card 3: Loading Spinner Issue</h3>
-                    <p>Card cuối cùng với content structure khác để test HTML Editor behavior under CSP restrictions. Perfect để demonstrate issue cho clients.</p>
-                    <button class="test-button warning" onclick="handleButtonClick(this)">Card Button 3</button>
+                    <label for="test-textarea">Test Textarea:</label>
+                    <textarea id="test-textarea" rows="3" placeholder="Test HTML Editor loading spinner issue với form elements"></textarea>
                 </div>
             </div>
         </div>
 
         <div class="test-section">
-            <h2>🔍 Section 5: Expected Results & Debug Info</h2>
-            <div class="editable-content">
-                <h4>Expected Behavior khi test:</h4>
+            <h2>🔍 Expected Results Guide</h2>
+            <div class="expected-result">
+                <h4>🎯 Kết quả mong đợi khi test:</h4>
                 <ul>
-                    <li>✅ <strong>Visual Editor loads successfully</strong> (nhờ frame-ancestors directive)</li>
-                    <li>❌ <strong>HTML Editor shows loading spinner forever</strong> (do script-src restrictions)</li>
-                    <li>🔍 <strong>Console shows CSP violation errors</strong></li>
-                    <li>🚫 <strong>Network tab shows blocked Optimizely requests</strong></li>
+                    <li><strong>✅ Visual Editor:</strong> Load trang thành công</li>
+                    <li><strong>❌ HTML Editor (với CSP):</strong> Loading spinner forever</li>
+                    <li><strong>🔍 Console:</strong> CSP violation errors</li>
+                    <li><strong>🚫 Network:</strong> Blocked Optimizely requests</li>
                 </ul>
-                
-                <h4>Console Errors cần tìm:</h4>
-                <div class="code-block">Refused to load the script 'https://cdn.optimizely.com/...' because it violates the following Content Security Policy directive: "script-src 'self'"
+            </div>
 
-Refused to execute inline script because it violates CSP directive 'script-src'
-
-Refused to apply inline style because it violates CSP directive 'style-src'</div>
-
-                <h4>Network Tab - Blocked Requests:</h4>
-                <ul>
-                    <li>Requests đến <code>*.optimizely.com</code> với status <code>(blocked:csp)</code></li>
-                    <li>Failed loads cho HTML Editor resources</li>
-                    <li>Successful iframe load cho Visual Editor</li>
-                </ul>
+            <h4>ModHeader Configuration để tạo HTML Editor conflict:</h4>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 6px; font-family: monospace;">
+                <strong>Response Header:</strong><br>
+                Name: Content-Security-Policy<br>
+                Value: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:
             </div>
         </div>
     </div>
 
     <script>
-        function handleButtonClick(button) {
+        function testClick(button) {
             console.log('Button clicked:', button.textContent);
-            
-            // Mock Optimizely tracking
-            window.optimizely.push(['trackEvent', 'button_click', {
-                button_text: button.textContent,
-                timestamp: new Date().toISOString()
-            }]);
-            
-            alert('Button clicked: ' + button.textContent + '\n\nBây giờ hãy thử "Edit HTML" trên button này trong Optimizely Visual Editor để reproduce loading spinner issue.');
+            alert('Button: ' + button.textContent + '\n\n👉 Thử "Edit HTML" trên button này để test HTML Editor loading issue!');
         }
 
-        // Page load tracking
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ Test page loaded successfully');
-            console.log('🔧 Ready for Optimizely Visual Editor testing');
-            console.log('📝 Use "Edit HTML" on any element to reproduce loading issue');
-            
-            // Test CSP detection
-            setTimeout(function() {
-                console.log('🔍 Page ready - if you see CSP violations when using HTML Editor, the test is working correctly');
-            }, 1000);
+            console.log('🚀 Page ready for Optimizely Visual Editor testing');
         });
     </script>
 </body>
