@@ -1,304 +1,113 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABN AMRO - HTML Editor Loading Issue (8+ Seconds)</title>
-    
+    <title>Isolated Visual Editor Slow Load Issue Simulation</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 40px;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-        
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 90%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        
-        .abn-header {
-            background: linear-gradient(135deg, #003366, #0066cc);
-            color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 2rem;
+        .normal-section {
+            background-color: #e9ecef;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #28a745;
         }
-        
-        .abn-header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            font-weight: 300;
+        .slow-section {
+            background-color: #fff3cd;
+            padding: 15px;
+            border: 1px solid #ffc107;
         }
-        
-        .status-indicator {
-            padding: 1rem;
-            border-radius: 6px;
-            margin: 1rem 0;
-            font-weight: bold;
-        }
-        
-        .status-working {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .status-broken {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .working-section {
-            background: #e7f3ff;
-            border: 2px solid #007bff;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            position: relative;
-        }
-        
-        .working-section::before {
-            content: "✅ HTML EDITOR WORKS NORMALLY";
-            position: absolute;
-            top: -12px;
-            left: 1rem;
-            background: #007bff;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-        
-        .problematic-section {
-            background: linear-gradient(135deg, #ff6600, #e55a00);
-            color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            text-align: center;
-            margin: 2rem 0;
-            position: relative;
-            border: 3px dashed #dc3545;
-        }
-        
-        .problematic-section::before {
-            content: "❌ HTML EDITOR LOADING 10+ SECONDS";
-            position: absolute;
-            top: -12px;
-            left: 1rem;
-            background: #dc3545;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border-radius: 4px;
-            z-index: 10;
-        }
-        
-        .pension-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 0 0 0.5rem 0;
-        }
-        
-        .pension-subtitle {
-            font-size: 1.3rem;
-            margin: 0 0 1rem 0;
-            opacity: 0.95;
-        }
-        
-        .cta-button {
-            background: white;
-            color: #ff6600;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            margin: 0.5rem;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-2px);
-        }
-        
-        .instructions {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-        }
-        
-        .debug-info {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            padding: 1rem;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            margin: 1rem 0;
-        }
+        /* CSS đơn giản, không gây chậm trễ cho việc tải trang */
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="abn-header">
-            <h1>ABN AMRO</h1>
-            <p>HTML Editor Loading Issue Test - Selective 8+ Second Delay</p>
+        <h1>Trang Tải Nhanh - Vấn đề Cô Lập</h1>
+        
+        <div class="normal-section">
+            <h2>Phần Nội Dung Tải Nhanh</h2>
+            <p>Phần này có cấu trúc DOM đơn giản và sẽ được tải gần như ngay lập tức. Trình duyệt sẽ hiển thị nội dung này rất nhanh chóng.</p>
+            <p>Đây là nội dung bình thường, không gây ra bất kỳ vấn đề hiệu suất nào cho quá trình tải trang tổng thể.</p>
         </div>
 
-        <div class="instructions">
-            <h3>🎯 Test Scenario:</h3>
-            <ul>
-                <li><strong>Visual Editor:</strong> ✅ Loads trang thành công</li>
-                <li><strong>Normal sections:</strong> ✅ HTML Editor opens quickly (< 2 seconds)</li>
-                <li><strong>Pension section:</strong> ❌ HTML Editor "Loading..." > 10 seconds</li>
-            </ul>
+        <!-- Phần tử này sẽ chứa nội dung phức tạp gây chậm visual editor -->
+        <div id="editable-content" class="slow-section">
+            <h2>Phần Nội Dung Gây Chậm Visual Editor</h2>
+            <p>Phần này được thiết kế để mô phỏng một khối nội dung phức tạp mà visual editor sẽ phải xử lý khi khởi tạo. Sự chậm trễ sẽ xảy ra khi editor cố gắng phân tích và chuyển đổi nội dung bên trong `id="editable-content"`.</p>
             
-            <h4>📋 Testing Steps:</h4>
-            <ol>
-                <li>Open Visual Editor với trang này</li>
-                <li>Test "Edit HTML" trên sections xanh → should work normally</li>
-                <li>Test "Edit HTML" trên section đỏ → Loading spinner 10+ seconds</li>
-            </ol>
-        </div>
-
-        <!-- Section 1: Normal behavior -->
-        <div class="working-section">
-            <h2>Regular Banking Services</h2>
-            <p>This section works perfectly with HTML Editor. Click "Edit HTML" here and it opens immediately.</p>
-            <ul>
-                <li>Online banking access</li>
-                <li>Account management</li>
-                <li>Transfer services</li>
-                <li>Investment portfolio</li>
-            </ul>
-            <button onclick="alert('Regular section - HTML Editor should work normally')">View Services</button>
-        </div>
-
-        <div class="status-indicator status-working">
-            ✅ Section above: HTML Editor loads instantly
-        </div>
-
-        <!-- Section 2: Problematic section with exact ABN AMRO content -->
-        <div class="problematic-section" id="pension-loading-issue">
-            <div class="pension-title">Top up your pension</div>
-            <div class="pension-subtitle">Receive a bonus of €100 up to €1,000</div>
-            
-            <p>This section is configured to block HTML Editor for 10+ seconds when you try to edit it. The content loading will be stuck at "Loading..." spinner.</p>
-            
-            <p><strong>Expected behavior:</strong> Click "Edit HTML" on this section → Loading spinner appears and continues for 10+ seconds before eventually loading or timing out.</p>
-            
-            <div style="margin-top: 1.5rem;">
-                <button class="cta-button" onclick="handlePensionClick()">Calculate Bonus</button>
-                <button class="cta-button" onclick="handlePensionClick()">Learn More</button>
+            <!-- Bắt đầu tạo DOM phức tạp bên trong phần tử này -->
+            <div id="complex-dom-structure">
+                <!-- Lặp lại cấu trúc lồng nhau và rộng để tăng độ phức tạp DOM -->
+                <!-- Giả lập 1000 phần tử lặp lại để tăng kích thước DOM và độ sâu -->
+                <div class="row">
+                    <div class="col">
+                        <p>Dữ liệu phức tạp 1</p>
+                        <div class="nested-level-1">
+                            <div class="nested-level-2">
+                                <div class="nested-level-3">
+                                    <!-- Lặp lại 1000 phần tử nhỏ để tăng độ rộng DOM -->
+                                    <span class="data-point">Item 1</span>
+                                    <span class="data-point">Item 2</span>
+                                    <span class="data-point">Item 3</span>
+                                    <span class="data-point">Item 4</span>
+                                    <span class="data-point">Item 5</span>
+                                    <!-- ... (sẽ lặp lại 1000 lần) ... -->
+                                    <span class="data-point">Item 1000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- Kết thúc tạo DOM phức tạp -->
         </div>
-
-        <div class="status-indicator status-broken">
-            ❌ Section above: HTML Editor will show "Loading..." for 10+ seconds
-        </div>
-
-        <!-- Section 3: Another normal section -->
-        <div class="working-section">
-            <h2>Contact Information</h2>
-            <p>This section also works normally with HTML Editor for comparison.</p>
-            <p><strong>Customer Service:</strong> 0900-0024 (€0.10/min)</p>
-            <p><strong>Business Hours:</strong> Monday-Friday 8:00-18:00</p>
-            <p><strong>Online Support:</strong> Available 24/7</p>
-        </div>
-
-        <div class="status-indicator status-working">
-            ✅ Section above: HTML Editor loads instantly
-        </div>
-
-        <div class="debug-info">
-            <strong>🔍 Debug Info:</strong><br>
-            - Check Console (F12) for timing logs when testing HTML Editor<br>
-            - Normal sections: No special behavior<br>
-            - Pension section: innerHTML getter blocked for 10 seconds<br>
-            - Expected console message: "[BLOCKING] HTML Editor reading innerHTML - 10s delay..."
+        
+        <div class="normal-section">
+            <h2>Phần Nội Dung Tải Nhanh Khác</h2>
+            <p>Phần này cũng tải nhanh và chứng minh rằng vấn đề chỉ nằm ở phần tử trên.</p>
         </div>
     </div>
 
     <script>
-        function handlePensionClick() {
-            alert('Pension CTA clicked!\n\n👉 Now try "Edit HTML" on this orange section to reproduce the loading issue.');
+        // Hàm chặn luồng chính (main thread)
+        function blockExecution(milliseconds) {
+            const start = Date.now();
+            while (Date.now() < start + milliseconds) {
+                // Chặn luồng chính
+            }
         }
 
+        // Mô phỏng script khởi tạo của Visual Editor
+        // Script này sẽ chạy sau khi DOM đã được tải và nhắm mục tiêu vào phần tử phức tạp.
         document.addEventListener('DOMContentLoaded', function() {
-            const problematicSection = document.getElementById('pension-loading-issue');
-            const DELAY_MILLISECONDS = 10000; // 10 seconds - exceeds 8s requirement
+            const editableContent = document.getElementById('editable-content');
             
-            if (problematicSection) {
-                // Store original innerHTML
-                let originalContent = problematicSection.innerHTML;
-                let isBlocked = false;
+            if (editableContent) {
+                console.log("Trang đã tải xong. Bắt đầu mô phỏng khởi tạo Visual Editor cho phần tử 'editable-content'...");
                 
-                console.log('🔧 Setting up HTML Editor loading delay for pension section...');
+                // Giả định rằng Visual Editor cần 8.5 giây để phân tích và chuyển đổi nội dung phức tạp này
+                // Đây là điểm gây ra sự chậm trễ > 8 giây
+                blockExecution(8500); 
                 
-                // Override innerHTML getter to create blocking delay
-                Object.defineProperty(problematicSection, 'innerHTML', {
-                    get() {
-                        if (isBlocked) {
-                            console.log('[ALREADY BLOCKING] Preventing multiple simultaneous blocks');
-                            return originalContent;
-                        }
-                        
-                        isBlocked = true;
-                        console.log(`[BLOCKING] HTML Editor reading innerHTML - starting ${DELAY_MILLISECONDS/1000}s delay...`);
-                        console.log('[BLOCKING] This will cause HTML Editor to show "Loading..." spinner');
-                        
-                        // Busy-wait loop to block main thread
-                        const startTime = Date.now();
-                        while (Date.now() - startTime < DELAY_MILLISECONDS) {
-                            // Busy loop - blocks main thread completely
-                            // This causes HTML Editor to be stuck at "Loading..."
-                            Math.random(); // Prevent optimization
-                        }
-                        
-                        console.log(`[BLOCKING] Delay complete after ${(Date.now() - startTime)/1000}s`);
-                        isBlocked = false;
-                        return originalContent;
-                    },
-                    set(newValue) {
-                        // Allow setting new content normally
-                        originalContent = newValue;
-                        // Update actual DOM if needed
-                        Array.from(problematicSection.childNodes).forEach(node => {
-                            if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
-                                problematicSection.removeChild(node);
-                            }
-                        });
-                        problematicSection.insertAdjacentHTML('afterbegin', newValue);
-                    },
-                    configurable: true
-                });
+                console.log("Hoàn thành khởi tạo Visual Editor cho phần tử 'editable-content'.");
                 
-                console.log('✅ Pension section configured for HTML Editor loading delay');
-                console.log('🎯 Test: Click "Edit HTML" on pension section → should show Loading... for 10+ seconds');
-            } else {
-                console.error('❌ Error: pension-loading-issue element not found');
+                // Thêm một lớp để đánh dấu rằng editor đã "khởi tạo"
+                editableContent.style.border = '3px solid red';
+                editableContent.innerHTML += '<p style="color: red; font-weight: bold;">[VISUAL EDITOR INITIALIZED AFTER > 8 SECONDS DELAY]</p>';
             }
         });
-        
-        console.log('📄 Page loaded - Ready for Optimizely Visual Editor testing');
-        console.log('🔧 Normal sections: HTML Editor works instantly');
-        console.log('⏳ Pension section: HTML Editor Loading... 10+ seconds');
     </script>
 </body>
 </html>
