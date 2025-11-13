@@ -1,288 +1,176 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimizely Visual Editor Compatible - HTML Editor Test</title>
+    <title>ABN AMRO Visual Editor Blocking - Reproduction Test</title>
     
-    <!-- Meta CSP để cố gắng override GitHub Pages restrictions -->
-    <meta http-equiv="Content-Security-Policy" content="frame-ancestors https://app.optimizely.com https://optimize.google.com *; default-src 'self' https://app.optimizely.com; script-src 'self' https://app.optimizely.com 'unsafe-inline'; style-src 'self' https://app.optimizely.com 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://app.optimizely.com https://logx.optimizely.com;">
-    
-    <!-- Cố gắng remove X-Frame-Options nếu có thể -->
-    <meta http-equiv="X-Frame-Options" content="">
+    <!-- Meta headers để simulate security restrictions -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-ancestors 'none';">
     
     <style>
-        :root {
-            --primary: #667eea;
-            --success: #28a745;
-            --warning: #ffc107;
-            --bg: #f5f7fa;
-            --text: #2c3e50;
-            --border: #e9ecef;
-            --shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        * { box-sizing: border-box; }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
-            background: var(--bg);
-            color: var(--text);
+            padding: 40px;
+            background: #f5f7fa;
+            color: #333;
             line-height: 1.6;
         }
-
+        
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-        }
-
-        .status-banner {
-            background: linear-gradient(135deg, var(--success), #20c997);
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary), #5a6fd8);
-            color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-
-        .instructions {
-            background: #e7f3ff;
-            border: 1px solid #b3d9ff;
-            color: #0066cc;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .test-section {
             background: white;
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #003366, #0066cc);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
             margin-bottom: 2rem;
-            border: 1px solid var(--border);
         }
-
-        .test-section h2 {
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 300;
+        }
+        
+        .pension-offer {
+            background: linear-gradient(135deg, #ff6600, #e55a00);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(255,102,0,0.3);
+        }
+        
+        .pension-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .pension-subtitle {
+            font-size: 1.3rem;
             margin: 0 0 1rem 0;
-            font-size: 1.5rem;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 0.5rem;
+            opacity: 0.95;
         }
-
-        .editable-highlight {
-            background: #fff3cd;
-            border: 2px dashed #ffc107;
+        
+        .cta-button {
+            background: white;
+            color: #ff6600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
             padding: 1.5rem;
             border-radius: 8px;
-            margin: 1rem 0;
-            position: relative;
+            margin: 2rem 0;
         }
-
-        .editable-highlight::before {
-            content: "👆 TRY 'EDIT HTML' ON THIS SECTION";
-            position: absolute;
-            top: -12px;
-            left: 1rem;
-            background: #ffc107;
-            color: #212529;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
-        }
-
-        .test-button {
-            background: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .test-button:hover {
-            background: #5a6fd8;
-            transform: translateY(-1px);
-        }
-
-        .test-button.success { background: var(--success); }
-        .test-button.warning { background: var(--warning); color: var(--text); }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        .expected-result {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
             padding: 1rem;
             border-radius: 6px;
             margin: 1rem 0;
         }
-
-        @media (max-width: 768px) {
-            .header h1 { font-size: 2rem; }
-            .button-group { flex-direction: column; }
-            .form-grid { grid-template-columns: 1fr; }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            overflow-x: auto;
         }
     </style>
-    
-    <!-- Optimizely Mock Snippet -->
-    <script>
-        window.optimizely = window.optimizely || [];
-        window.optimizely.push = function(command) {
-            console.log('Mock Optimizely command:', command);
-        };
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ Page loaded - Testing Visual Editor compatibility');
-            console.log('🔧 Ready for HTML Editor conflict testing');
-        });
-    </script>
 </head>
 <body>
     <div class="container">
-        <div class="status-banner">
-            ✅ Visual Editor Compatible Mode - Trang được optimize cho Optimizely
+        <div class="header">
+            <h1>ABN AMRO</h1>
+            <p>Personal Banking - Netherlands</p>
         </div>
 
-        <div class="header">
-            <h1>🔧 Optimizely HTML Editor Loading Test</h1>
-            <p>Trang đã được config để Visual Editor có thể load</p>
+        <div class="warning">
+            <strong>⚠️ Security Notice:</strong> This page is configured with security headers that prevent embedding in external iframes (including Optimizely Visual Editor).
+        </div>
+
+        <!-- Target content that reproduces the exact text from ABN AMRO -->
+        <div class="pension-offer" id="pension-offer-section">
+            <div class="pension-title">Top up your pension</div>
+            <div class="pension-subtitle">Receive a bonus of €100 up to €1,000</div>
+            <p>Boost your retirement savings with our pension contribution program. Eligible customers can receive bonus contributions based on their investment amount.</p>
+            <button class="cta-button" onclick="handleCTAClick()">Learn More</button>
         </div>
 
         <div class="instructions">
-            <h3>📋 Quy trình test HTML Editor loading issue:</h3>
+            <h3>📋 Expected Behavior khi test với Optimizely:</h3>
             <ol>
-                <li><strong>Test Visual Editor:</strong> Mở trang này trong Optimizely Visual Editor</li>
-                <li><strong>Verify loading:</strong> Trang phải load thành công</li>
-                <li><strong>Setup ModHeader:</strong> Sau đó config CSP restrictive để tạo HTML Editor conflict</li>
-                <li><strong>Test HTML Editor:</strong> Thử "Edit HTML" → sẽ loading spinner forever</li>
+                <li><strong>Visual Editor sẽ KHÔNG load được trang này</strong> (do security headers)</li>
+                <li><strong>Browser sẽ hiển thị lỗi framing</strong> trong Console</li>
+                <li><strong>Không thể access bất kỳ content nào</strong>, including pension offer text</li>
+                <li><strong>Visual Editor shows blank screen hoặc error message</strong></li>
             </ol>
         </div>
 
-        <div class="test-section">
-            <h2>🎯 Section 1: Primary Test Content</h2>
-            <div class="editable-highlight">
-                <h3>Content chính để test HTML Editor</h3>
-                <p><strong>Click "Edit HTML" trên section này</strong> để test HTML Editor functionality. Khi có CSP restrictions, HTML Editor sẽ không thể load các resources cần thiết từ Optimizely domains.</p>
-                <p>Paragraph với <em>italic text</em> và <strong>bold formatting</strong>. Perfect để test HTML Editor behavior under different CSP configurations.</p>
-                <ul>
-                    <li>List item 1: HTML Editor loading test</li>
-                    <li>List item 2: CSP violation checking</li>
-                    <li>List item 3: Console error monitoring</li>
-                </ul>
+        <div class="instructions">
+            <h3>🔍 Console Errors sẽ thấy:</h3>
+            <div class="code-block">
+Refused to display '[URL]' in a frame because it set 'X-Frame-Options' to 'DENY'.
+
+hoặc
+
+Refused to frame '[URL]' because an ancestor violates the following Content Security Policy directive: "frame-ancestors 'none'".
             </div>
         </div>
 
-        <div class="test-section">
-            <h2>🔘 Section 2: Interactive Elements</h2>
-            <div class="editable-highlight">
-                <div class="button-group">
-                    <button class="test-button" onclick="testClick(this)">Primary Button</button>
-                    <button class="test-button success" onclick="testClick(this)">Success Button</button>
-                    <button class="test-button warning" onclick="testClick(this)">Warning Button</button>
-                </div>
-                <p>Thử "Edit HTML" trên button group này để test HTML Editor với interactive elements.</p>
-            </div>
-        </div>
-
-        <div class="test-section">
-            <h2>📝 Section 3: Form Elements</h2>
-            <div class="editable-highlight">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="test-input">Test Input:</label>
-                        <input type="text" id="test-input" placeholder="HTML Editor test input">
-                    </div>
-                    <div class="form-group">
-                        <label for="test-select">Test Select:</label>
-                        <select id="test-select">
-                            <option>HTML Editor Loading Test</option>
-                            <option>CSP Conflict Scenario</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="test-textarea">Test Textarea:</label>
-                    <textarea id="test-textarea" rows="3" placeholder="Test HTML Editor loading spinner issue với form elements"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <div class="test-section">
-            <h2>🔍 Expected Results Guide</h2>
-            <div class="expected-result">
-                <h4>🎯 Kết quả mong đợi khi test:</h4>
-                <ul>
-                    <li><strong>✅ Visual Editor:</strong> Load trang thành công</li>
-                    <li><strong>❌ HTML Editor (với CSP):</strong> Loading spinner forever</li>
-                    <li><strong>🔍 Console:</strong> CSP violation errors</li>
-                    <li><strong>🚫 Network:</strong> Blocked Optimizely requests</li>
-                </ul>
-            </div>
-
-            <h4>ModHeader Configuration để tạo HTML Editor conflict:</h4>
-            <div style="background: #f8f9fa; padding: 1rem; border-radius: 6px; font-family: monospace;">
-                <strong>Response Header:</strong><br>
-                Name: Content-Security-Policy<br>
-                Value: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:
-            </div>
-        </div>
+        <section style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
+            <h3>🎯 Reproduction Steps:</h3>
+            <ol>
+                <li>Host file này với proper HTTP headers (xem hướng dẫn dưới)</li>
+                <li>Mở Optimizely Dashboard → Create/Edit experiment</li>
+                <li>URL Targeting: nhập URL của trang này</li>
+                <li>Click "Open Visual Editor"</li>
+                <li>Observe: Visual Editor không thể load trang</li>
+            </ol>
+        </section>
     </div>
 
     <script>
-        function testClick(button) {
-            console.log('Button clicked:', button.textContent);
-            alert('Button: ' + button.textContent + '\n\n👉 Thử "Edit HTML" trên button này để test HTML Editor loading issue!');
+        function handleCTAClick() {
+            alert('CTA clicked: Learn More about Pension\n\nNote: Trong thực tế, bạn sẽ không thể interact với content này trong Visual Editor do framing restrictions.');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Page ready for Optimizely Visual Editor testing');
+            console.log('ABN AMRO reproduction page loaded');
+            console.log('Security headers active - framing should be blocked');
+            console.log('Target content: "Top up your pension - Receive a bonus of €100 up to €1,000"');
         });
     </script>
 </body>
