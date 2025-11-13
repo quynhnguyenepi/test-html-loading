@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isolated Visual Editor Slow Load Issue Simulation</title>
+    <title>Extreme Visual Editor Slow Load Issue Simulation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,63 +25,95 @@
             border-left: 5px solid #28a745;
         }
         .slow-section {
-            background-color: #fff3cd;
+            background-color: #f8d7da; /* Màu đỏ nhạt hơn để nhấn mạnh vấn đề */
             padding: 15px;
-            border: 1px solid #ffc107;
+            border: 1px solid #dc3545;
         }
-        /* CSS đơn giản, không gây chậm trễ cho việc tải trang */
+        
+        /* Tăng cường độ phức tạp của CSS: 
+           Sử dụng nhiều selector lồng nhau và thuộc tính phức tạp.
+           Tạo ra 5000 selector giả lập để tăng thời gian phân tích CSSOM.
+        */
+        
+        /* Bắt đầu 5000 selectors giả lập */
+        .s-0001, .s-0002, .s-0003, .s-0004, .s-0005, .s-0006, .s-0007, .s-0008, .s-0009, .s-0010,
+        /* ... (sẽ lặp lại 500 lần để đạt 5000 selectors) ... */
+        .s-4991, .s-4992, .s-4993, .s-4994, .s-4995, .s-4996, .s-4997, .s-4998, .s-4999, .s-5000 {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.3) inset;
+            transform: rotate(0deg) scale(1);
+            transition: all 0.5s ease-in-out;
+            will-change: transform, box-shadow;
+            padding: 2px;
+            margin: 1px;
+            border: 1px solid transparent;
+        }
+        
+        /* Thêm một lượng lớn media query phức tạp */
+        @media (min-width: 1200px) {
+            .slow-section {
+                padding: 30px;
+            }
+            /* Thêm 5000 media query selectors */
+            .mq-s-0001, .mq-s-0002, .mq-s-0003, .mq-s-0004, .mq-s-0005, .mq-s-0006, .mq-s-0007, .mq-s-0008, .mq-s-0009, .mq-s-0010,
+            /* ... (sẽ lặp lại 500 lần để đạt 5000 selectors) ... */
+            .mq-s-4991, .mq-s-4992, .mq-s-4993, .mq-s-4994, .mq-s-4995, .mq-s-4996, .mq-s-4997, .mq-s-4998, .mq-s-4999, .mq-s-5000 {
+                border-right: 10px solid #dc3545;
+                filter: grayscale(50%) blur(1px);
+            }
+        }
+        /* Kết thúc CSS cực đoan */
+        
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Trang Tải Nhanh - Vấn đề Cô Lập</h1>
+        <h1>Trang Tải Nhanh - Vấn đề Cô Lập Cực Đoan</h1>
         
         <div class="normal-section">
             <h2>Phần Nội Dung Tải Nhanh</h2>
-            <p>Phần này có cấu trúc DOM đơn giản và sẽ được tải gần như ngay lập tức. Trình duyệt sẽ hiển thị nội dung này rất nhanh chóng.</p>
-            <p>Đây là nội dung bình thường, không gây ra bất kỳ vấn đề hiệu suất nào cho quá trình tải trang tổng thể.</p>
+            <p>Phần này tải nhanh. Vấn đề chỉ nằm ở phần tử bên dưới.</p>
         </div>
 
         <!-- Phần tử này sẽ chứa nội dung phức tạp gây chậm visual editor -->
         <div id="editable-content" class="slow-section">
-            <h2>Phần Nội Dung Gây Chậm Visual Editor</h2>
-            <p>Phần này được thiết kế để mô phỏng một khối nội dung phức tạp mà visual editor sẽ phải xử lý khi khởi tạo. Sự chậm trễ sẽ xảy ra khi editor cố gắng phân tích và chuyển đổi nội dung bên trong `id="editable-content"`.</p>
+            <h2>Phần Nội Dung Gây Chậm Visual Editor (Cực Đoan)</h2>
+            <p>Phần này chứa cấu trúc DOM và các lớp CSS cực kỳ phức tạp. Khi visual editor cố gắng phân tích, áp dụng kiểu dáng và tính toán bố cục cho nội dung này, nó sẽ mất nhiều thời gian hơn 8 giây.</p>
             
-            <!-- Bắt đầu tạo DOM phức tạp bên trong phần tử này -->
+            <!-- Bắt đầu tạo DOM cực kỳ phức tạp -->
             <div id="complex-dom-structure">
                 <!-- Lặp lại cấu trúc lồng nhau và rộng để tăng độ phức tạp DOM -->
-                <!-- Giả lập 1000 phần tử lặp lại để tăng kích thước DOM và độ sâu -->
-                <div class="row">
-                    <div class="col">
+                <!-- Giả lập 5000 phần tử lặp lại để tăng kích thước DOM và độ sâu -->
+                <div class="row s-0001 mq-s-0001">
+                    <div class="col s-0002 mq-s-0002">
                         <p>Dữ liệu phức tạp 1</p>
-                        <div class="nested-level-1">
-                            <div class="nested-level-2">
-                                <div class="nested-level-3">
-                                    <!-- Lặp lại 1000 phần tử nhỏ để tăng độ rộng DOM -->
-                                    <span class="data-point">Item 1</span>
-                                    <span class="data-point">Item 2</span>
-                                    <span class="data-point">Item 3</span>
-                                    <span class="data-point">Item 4</span>
-                                    <span class="data-point">Item 5</span>
-                                    <!-- ... (sẽ lặp lại 1000 lần) ... -->
-                                    <span class="data-point">Item 1000</span>
+                        <div class="nested-level-1 s-0003 mq-s-0003">
+                            <div class="nested-level-2 s-0004 mq-s-0004">
+                                <div class="nested-level-3 s-0005 mq-s-0005">
+                                    <!-- Lặp lại 5000 phần tử nhỏ để tăng độ rộng DOM -->
+                                    <span class="data-point s-0006 mq-s-0006">Item 1</span>
+                                    <span class="data-point s-0007 mq-s-0007">Item 2</span>
+                                    <span class="data-point s-0008 mq-s-0008">Item 3</span>
+                                    <span class="data-point s-0009 mq-s-0009">Item 4</span>
+                                    <span class="data-point s-0010 mq-s-0010">Item 5</span>
+                                    <!-- ... (sẽ lặp lại 5000 lần) ... -->
+                                    <span class="data-point s-5000 mq-s-5000">Item 5000</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Kết thúc tạo DOM phức tạp -->
+            <!-- Kết thúc tạo DOM cực kỳ phức tạp -->
         </div>
         
         <div class="normal-section">
             <h2>Phần Nội Dung Tải Nhanh Khác</h2>
-            <p>Phần này cũng tải nhanh và chứng minh rằng vấn đề chỉ nằm ở phần tử trên.</p>
+            <p>Phần này cũng tải nhanh.</p>
         </div>
     </div>
 
     <script>
-        // Hàm chặn luồng chính (main thread)
+        // Hàm chặn luồng chính (main thread) - Tăng thời gian chặn lên 10 giây để chắc chắn
         function blockExecution(milliseconds) {
             const start = Date.now();
             while (Date.now() < start + milliseconds) {
@@ -90,22 +122,21 @@
         }
 
         // Mô phỏng script khởi tạo của Visual Editor
-        // Script này sẽ chạy sau khi DOM đã được tải và nhắm mục tiêu vào phần tử phức tạp.
         document.addEventListener('DOMContentLoaded', function() {
             const editableContent = document.getElementById('editable-content');
             
             if (editableContent) {
                 console.log("Trang đã tải xong. Bắt đầu mô phỏng khởi tạo Visual Editor cho phần tử 'editable-content'...");
                 
-                // Giả định rằng Visual Editor cần 8.5 giây để phân tích và chuyển đổi nội dung phức tạp này
+                // Giả định rằng Visual Editor cần 10 giây để phân tích và chuyển đổi nội dung phức tạp này
                 // Đây là điểm gây ra sự chậm trễ > 8 giây
-                blockExecution(8500); 
+                blockExecution(10000); 
                 
                 console.log("Hoàn thành khởi tạo Visual Editor cho phần tử 'editable-content'.");
                 
                 // Thêm một lớp để đánh dấu rằng editor đã "khởi tạo"
                 editableContent.style.border = '3px solid red';
-                editableContent.innerHTML += '<p style="color: red; font-weight: bold;">[VISUAL EDITOR INITIALIZED AFTER > 8 SECONDS DELAY]</p>';
+                editableContent.innerHTML += '<p style="color: red; font-weight: bold;">[VISUAL EDITOR INITIALIZED AFTER > 10 SECONDS DELAY]</p>';
             }
         });
     </script>
